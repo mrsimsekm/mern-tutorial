@@ -1,0 +1,21 @@
+services:
+  frontend:
+    image: mern-fe:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+  backend:
+    image: mern-be:latest
+    ports:
+      - "5000:5000"    #external:internal
+    depends_on:
+      - mongo
+  mongo:
+    volumes:
+      - mongo:/data/db
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+volumes:
+  mongo:
