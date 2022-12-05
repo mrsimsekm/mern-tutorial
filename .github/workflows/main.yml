@@ -1,0 +1,31 @@
+name: Deploy to ECR
+
+on:
+  push:
+    branches: [main]
+    
+jobs:
+  build:
+    name: Build Image
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    - name: Check out code
+      uses: actions/checkout@v2
+  
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-region: eu-central-1
+        role-to-assume: arn:aws:iam::314800140505:role/github-ecr-full
+        role-session-name: BuildImage
+
+    - name: Build, tag, push image to ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: case-ndbs
+        IMAGE_TAG: 1
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
