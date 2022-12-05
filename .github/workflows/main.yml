@@ -24,7 +24,7 @@ jobs:
     - name: Build, tag, push backend image to ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: case-ndbs
+        ECR_REPOSITORY: ndbscase
         IMAGE_TAG: be
       run: |
         docker build --file=Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -32,7 +32,7 @@ jobs:
     - name: Build, tag, push backend image to ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: case-ndbs
+        ECR_REPOSITORY: ndbscase
         IMAGE_TAG: be
       run: |
         docker build --file=frontend/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
