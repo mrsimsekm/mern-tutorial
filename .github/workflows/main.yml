@@ -19,7 +19,7 @@ jobs:
       with:
         aws-region: eu-central-1
         role-to-assume: arn:aws:iam::314800140505:role/github-ecr-full
-        role-session-name: BuildImage
+
 
     - name: Build, tag, push image to ECR
       env:
