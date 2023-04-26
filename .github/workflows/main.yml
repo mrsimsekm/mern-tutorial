@@ -1,5 +1,4 @@
-on: [push]
-name: Linux_Container_Workflow_OIDC
+name: Deploy to ACR
 
 permissions:
   id-token: write
