@@ -1,43 +1,43 @@
-name: Deploy to ECR
+on: [push]
+name: Linux_Container_Workflow_OIDC
+
+permissions:
+  id-token: write
+  contents: read
 
 on:
   push:
-    branches: [main]
-    
-jobs:
-  build:
-    name: Build Image
-    runs-on: ubuntu-latest
-    
-    steps:
-    
-    - name: Check out code
-      uses: actions/checkout@v2
-  
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-central-1
-    
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+    branches:
+    - main
+    - release/*
 
-    - name: Build, tag, push backend image to ECR
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ndbs-be
-        IMAGE_TAG: ndbs-be-image
-      run: |
-        docker build --file=Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    - name: Build, tag, push backend image to ECR
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ndbs-fe
-        IMAGE_TAG: ndbs-fe-image
-      run: |
-        docker build --file=frontend/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@main
+          
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+           client-id: ${{ secrets.AZURE_CLIENT_ID }}
+           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+        - name: Build and push image
+          id: build-image
+          run: |
+           az acr build --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/MicroservicesCaseApp:${{ github.sha }} --registry ${{ secrets.REGISTRY_LOGIN_SERVER }} --file "Dockerfile" .
+
+#        - name: 'Deploy to Azure Container Instances'
+#          uses: 'azure/aci-deploy@v1'
+#          with:
+#           resource-group: ${{ secrets.RESOURCE_GROUP }}
+#           dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+#           image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/MicroservicesCaseApp:${{ github.sha }}
+#           registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+#           registry-username: ${{ secrets.REGISTRY_USERNAME }}
+#           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+#           name: MicroserviceCaseApp
+#           location: 'Germany West Central'
