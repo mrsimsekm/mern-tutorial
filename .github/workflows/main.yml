@@ -3,6 +3,7 @@ name: Deploy to ACR
 permissions:
   id-token: write
   contents: read
+  
 
 on:
   push:
