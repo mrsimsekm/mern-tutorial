@@ -1,8 +1,7 @@
 FROM node:18
 WORKDIR /app
 COPY . .
-WORKDIR /frontend
-RUN npm install
+RUN cd /frontend && npm install
 EXPOSE 3000
 CMD ["npm","run","build"]
 CMD ["npm","start"]
