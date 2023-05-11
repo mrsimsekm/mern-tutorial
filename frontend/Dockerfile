@@ -1,6 +1,7 @@
 FROM node:18
 WORKDIR /app
 COPY . .
+WORKDIR /frontend
 RUN npm install
 EXPOSE 3000
 CMD ["npm","run","build"]
