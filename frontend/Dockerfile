@@ -1,6 +1,6 @@
 FROM node:18
 WORKDIR /app
-COPY . .
+COPY frontend/. frontend/.
 WORKDIR frontend
 RUN npm install
 EXPOSE 3000
