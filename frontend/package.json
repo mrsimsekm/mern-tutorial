@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "proxy": "https://testmicroservice1.azurewebsites.net",
+  "proxy": "http://localhost:5000",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.2",
@@ -27,7 +27,8 @@
     "extends": "react-app"
   },
   "devServer": {
-    "allowedHosts": "all"
+    "allowedHosts": "all",
+    "host": "0.0.0.0"
   },
   "browserslist": {
     "production": [
