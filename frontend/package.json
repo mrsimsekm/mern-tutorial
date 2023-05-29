@@ -30,7 +30,7 @@
     "allowedHosts": "all",
     "host": "0.0.0.0",
     "disableHostCheck":true,
-    "public": 'testmicroservice1.azurewebsites.net' // That solved it
+    "public": "testmicroservice1.azurewebsites.net"
   },
   "browserslist": {
     "production": [
