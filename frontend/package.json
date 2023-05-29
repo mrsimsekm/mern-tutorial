@@ -26,12 +26,6 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "devServer": {
-    "allowedHosts": "all",
-    "host": "0.0.0.0",
-    "disableHostCheck":true,
-    "public": "testmicroservice1.azurewebsites.net"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
