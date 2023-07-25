@@ -1,5 +1,5 @@
 FROM nginx
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
-COPY build .
+COPY ./build .
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
